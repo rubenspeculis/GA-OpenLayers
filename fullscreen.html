@@ -47,7 +47,8 @@
 						transparent: true, 
 						format: "image/png24"
 					}, {
-						isBaseLayer: true // Sets Layer as base
+						isBaseLayer: true, // Sets Layer as base
+						attribution:"Layer Provided by Geoscience Australia"
 					});
 
 	    
@@ -58,7 +59,8 @@
 						transparent: true, 
 						format: 'image/png'
 					},{
-						isBaseLayer: false // Sets layer as overlay. Default for Overlay is Visible. We could set it as non-visible.
+						isBaseLayer: false, // Sets layer as overlay. Default for Overlay is Visible. We could set it as non-visible.
+						attribution:"Layer Provided by the Sentinel Project at GA"
 					});
 			
 			// We add the layers to the map object (we could do it in one line with addLayers({});)		
