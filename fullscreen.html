@@ -25,10 +25,10 @@
 <script type="text/javascript">
 		
 		// Variable declaration
-        var map, layer, info;
-		
+	        var map, layer, info;
+		OpenLayers.ProxyHost = 'cgi-bin/proxy.cgi?url=';
 		// Whole map setup is wrapped up in the init() function so as to be called onload. Could easily be called within $('Document').ready()
-        function init(){
+	        function init(){
             // Declare new map object. First parameter is the target div id.
 			map = new OpenLayers.Map( 'map', {
             			// Next we set the boundaries for the map. These have been taken from the Sentinel Dataset.
@@ -53,7 +53,7 @@
 
 	    
 			sentinel = new OpenLayers.Layer.WMS("Sentinel",
-					'http://sentinel1.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
+					'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
 					{
 						layers: '1600,1601,1602,1603,1604', 
 						transparent: true, 
@@ -72,32 +72,33 @@
 			*	Sentinel Serivces/
 			*	
 			***************************************************************************************/
-			/*
+			
 			info = new OpenLayers.Control.WMSGetFeatureInfo({
-            		url: 'http://sentinel1.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
+            		url: 'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
             		title: 'Identify features by clicking',
             		queryVisible: true,
             		eventListeners: {
                 		getfeatureinfo: function(event) {
-                    		map.addPopup(new OpenLayers.Popup.FramedCloud(
-                        		"chicken", 
-                        		map.getLonLatFromPixel(event.xy),
-                        		null,
-                        		event.text,
-                        		null,
-                        		true
-                    		));
-                		}
-            	}
-        	}); 
+      		              		map.addPopup(new OpenLayers.Popup.FramedCloud(
+      		                  		"chicken", 
+      		                  		map.getLonLatFromPixel(event.xy),
+      		                  		null,
+      		                  		event.text,
+      		                  		null,
+      		                  		true
+      			              		));
+      		          		}
+      			      	}
+      		  	}); 
         
 			map.addControl(info);
-        	info.activate();
-			*/
+        		info.activate();
+			
 	    	
 			map.zoomToMaxExtent(); // Centre map to extent
-            map.addControl( new OpenLayers.Control.LayerSwitcher() ); // Add Layer Switcher to map. 
+            		map.addControl( new OpenLayers.Control.LayerSwitcher() ); // Add Layer Switcher to map. 
 		}
+
 </script>
 </body>
 </html>
