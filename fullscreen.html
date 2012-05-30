@@ -26,6 +26,7 @@
 		
 		// Variable declaration
 	        var map, layer, info;
+		// Define proxy to overcome XSS issues
 		OpenLayers.ProxyHost = 'cgi-bin/proxy.cgi?url=';
 		// Whole map setup is wrapped up in the init() function so as to be called onload. Could easily be called within $('Document').ready()
 	        function init(){
@@ -67,12 +68,7 @@
             map.addLayer(base);
     	    map.addLayer(sentinel);
 	 
-			/*************************************************************************************** 
-			*	At time of writing we do not have access to do GetFeatureInfo through WMS on the 
-			*	Sentinel Serivces/
-			*	
-			***************************************************************************************/
-			
+		// Adding popup features	
 			info = new OpenLayers.Control.WMSGetFeatureInfo({
             		url: 'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
             		title: 'Identify features by clicking',
