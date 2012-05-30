@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GA Openlayers Example</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+<body onload="init()">
+<div id="map"></div>
+<div id="text">
+	<h1 id="title">Example of querying GA datasets.</h1>
+	<div id="tags">
+		 css, style, fullscreen, window, margin, padding, scrollbar
+	</div>
+	<div id="docs">
+		<p>
+			Base layer from: http://www.ga.gov.au/gis/services/topography/World_Simple/MapServer/WMSServer<br/>
+			Overlay from: http://sentinel1.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?
+		</p>
+	</div>
+</div>
+<script src="http://openlayers.org/api/OpenLayers.js"></script>
+<script type="text/javascript">
+		
+		// Variable declaration
+        var map, layer, info;
+		
+		// Whole map setup is wrapped up in the init() function so as to be called onload. Could easily be called within $('Document').ready()
+        function init(){
+            // Declare new map object. First parameter is the target div id.
+			map = new OpenLayers.Map( 'map', {
+            			// Next we set the boundaries for the map. These have been taken from the Sentinel Dataset.
+						maxExtent: new OpenLayers.Bounds(113.375,-43.589,153.558,-8.9333)
+        			});
+	    
+			/*************************************************************************************** 
+			*	Declare Base layer for the map. Both layers here us WMS. 
+			*	Contructor calls for the Title, Base Request URL, Object {Layers}, Object {OPTIONS}
+			*	Documentation can be found: http://dev.openlayers.org/docs/files/OpenLayers/Layer/WMS-js.html
+			***************************************************************************************/
+			base = new OpenLayers.Layer.WMS( "World Map",
+					"http://www.ga.gov.au/gis/services/topography/World_Simple/MapServer/WMSServer", 
+					{
+						layers: '0,1,4,5', 
+						transparent: true, 
+						format: "image/png24"
+					}, {
+						isBaseLayer: true // Sets Layer as base
+					});
+
+	    
+			sentinel = new OpenLayers.Layer.WMS("Sentinel",
+					'http://sentinel1.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
+					{
+						layers: '1600,1601,1602,1603,1604', 
+						transparent: true, 
+						format: 'image/png'
+					},{
+						isBaseLayer: false // Sets layer as overlay. Default for Overlay is Visible. We could set it as non-visible.
+					});
+			
+			// We add the layers to the map object (we could do it in one line with addLayers({});)		
+            map.addLayer(base);
+    	    map.addLayer(sentinel);
+	 
+			/*************************************************************************************** 
+			*	At time of writing we do not have access to do GetFeatureInfo through WMS on the 
+			*	Sentinel Serivces/
+			*	
+			***************************************************************************************/
+			/*
+			info = new OpenLayers.Control.WMSGetFeatureInfo({
+            		url: 'http://sentinel1.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
+            		title: 'Identify features by clicking',
+            		queryVisible: true,
+            		eventListeners: {
+                		getfeatureinfo: function(event) {
+                    		map.addPopup(new OpenLayers.Popup.FramedCloud(
+                        		"chicken", 
+                        		map.getLonLatFromPixel(event.xy),
+                        		null,
+                        		event.text,
+                        		null,
+                        		true
+                    		));
+                		}
+            	}
+        	}); 
+        
+			map.addControl(info);
+        	info.activate();
+			*/
+	    	
+			map.zoomToMaxExtent(); // Centre map to extent
+            map.addControl( new OpenLayers.Control.LayerSwitcher() ); // Add Layer Switcher to map. 
+		}
+</script>
+</body>
+</html>
