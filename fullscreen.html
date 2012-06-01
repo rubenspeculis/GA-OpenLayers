@@ -28,13 +28,13 @@
 	        var map, layer, info;
 		// Define proxy to overcome XSS issues
 		OpenLayers.ProxyHost = 'cgi-bin/proxy.cgi?url=';
-		// Whole map setup is wrapped up in the init() function so as to be called onload. Could easily be called within $('Document').ready()
-	        function init(){
-            // Declare new map object. First parameter is the target div id.
+			// Whole map setup is wrapped up in the init() function so as to be called onload. Could easily be called within $('Document').ready()
+		        function init(){
+		        // Declare new map object. First parameter is the target div id.
 			map = new OpenLayers.Map( 'map', {
-            			// Next we set the boundaries for the map. These have been taken from the Sentinel Dataset.
-						maxExtent: new OpenLayers.Bounds(113.375,-43.589,153.558,-8.9333)
-        			});
+            		// Next we set the boundaries for the map. These have been taken from the Sentinel Dataset.
+				maxExtent: new OpenLayers.Bounds(113.375,-43.589,153.558,-8.9333)
+        		});
 	    
 			/*************************************************************************************** 
 			*	Declare Base layer for the map. Both layers here us WMS. 
@@ -42,46 +42,45 @@
 			*	Documentation can be found: http://dev.openlayers.org/docs/files/OpenLayers/Layer/WMS-js.html
 			***************************************************************************************/
 			base = new OpenLayers.Layer.WMS( "World Map",
-					"http://www.ga.gov.au/gis/services/topography/World_Simple/MapServer/WMSServer", 
-					{
-						layers: '0,1,4,5', 
-						transparent: true, 
-						format: "image/png24"
-					}, {
-						isBaseLayer: true, // Sets Layer as base
-						attribution:"Layer Provided by Geoscience Australia"
-					});
-
-	    
+				"http://www.ga.gov.au/gis/services/topography/World_Simple/MapServer/WMSServer", 
+				{
+					layers: '0,1,4,5', 
+					transparent: true, 
+					format: "image/png24"
+				}, {
+					isBaseLayer: true, // Sets Layer as base
+					attribution:"Layer Provided by Geoscience Australia"
+				});
+    
 			sentinel = new OpenLayers.Layer.WMS("Sentinel",
-					'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
-					{
-						layers: '1600,1601,1602,1603,1604', 
-						transparent: true, 
-						format: 'image/png'
-					},{
-						isBaseLayer: false, // Sets layer as overlay. Default for Overlay is Visible. We could set it as non-visible.
-						attribution:"Layer Provided by the Sentinel Project at GA"
-					});
+				'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
+				{
+					layers: '1600,1601,1602,1603,1604', 
+					transparent: true, 
+					format: 'image/png'
+				},{
+					isBaseLayer: false, // Sets layer as overlay. Default for Overlay is Visible. We could set it as non-visible.
+					attribution:"Layer Provided by the Sentinel Project at GA"
+				});
 			
 			// We add the layers to the map object (we could do it in one line with addLayers({});)		
-            map.addLayer(base);
-    	    map.addLayer(sentinel);
+	     	       map.addLayer(base);
+    	    	       map.addLayer(sentinel);
 	 
-		// Adding popup features	
+			// Addig popup features	
 			info = new OpenLayers.Control.WMSGetFeatureInfo({
-            		url: 'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
-            		title: 'Identify features by clicking',
-            		queryVisible: true,
-            		eventListeners: {
-                		getfeatureinfo: function(event) {
-      		              		map.addPopup(new OpenLayers.Popup.FramedCloud(
-      		                  		"chicken", 
-      		                  		map.getLonLatFromPixel(event.xy),
-      		                  		null,
-      		                  		event.text,
-      		                  		null,
-      		                  		true
+            			url: 'http://sentinel2.ga.gov.au:80/wmsconnector/com.esri.wms.Esrimap/GDA94_Sentinel_Shapefiles_WMS?', 
+        	    		title: 'Identify features by clicking',
+            			queryVisible: true,
+            			eventListeners: {
+        	       	 		getfeatureinfo: function(event) {
+      			              		map.addPopup(new OpenLayers.Popup.FramedCloud(
+      		        	          		"chicken", 
+      		                	  		map.getLonLatFromPixel(event.xy),
+      		                  			null,
+      		                  			event.text,
+      		                  			null,
+      		                  			true
       			              		));
       		          		}
       			      	}
@@ -90,11 +89,9 @@
 			map.addControl(info);
         		info.activate();
 			
-	    	
 			map.zoomToMaxExtent(); // Centre map to extent
             		map.addControl( new OpenLayers.Control.LayerSwitcher() ); // Add Layer Switcher to map. 
 		}
-
 </script>
 </body>
 </html>
